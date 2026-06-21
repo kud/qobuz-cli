@@ -29,6 +29,15 @@ $ qobuz url album 0634904032432
 
 `copy-url` is an alias for the same command. Without `pbcopy` (non-macOS) it falls back to printing the bare link to stdout, so it still composes in a pipe.
 
+**Scripting — `--plain`.** Pass `--plain` to print just the URL to stdout and skip the clipboard entirely. Works in both modes:
+
+```console
+$ qobuz url --plain
+https://open.qobuz.com/track/284254940
+
+$ NOW=$(qobuz url --plain)        # capture the playing track's URL in a script
+```
+
 > **How "current track" works.** macOS now-playing is a dead end for Qobuz — the app never registers with it (so Control Center sticks on Spotify/Apple Music). Instead, the CLI reads Qobuz's own queue state at `~/Library/Application Support/Qobuz/player-0.json` and takes `items[currentIndex]`. If the app isn't open and playing, you'll get `Nothing playing — couldn't read Qobuz's current track.`
 
 ### `qobuz open <type> <id>`

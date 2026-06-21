@@ -37,6 +37,7 @@ $ qobuz next                       # skip track (also: previous, forward, rewind
 $ qobuz open album 0634904032432   # open in the Qobuz app
 $ qobuz url                        # copy the currently-playing track's link
 $ qobuz url album 0634904032432    # copy a specific item's deep link
+$ qobuz url --plain                # print the bare URL (no clipboard) for scripting
 ```
 
 Full command set: `login`, `logout`, `search`, `album`, `artist`, `track`, `similar`, `fav` (list/add/remove), `playlist` (list/show/create/add/remove), `url` / `copy-url`, `open`, `play`, `next`, `previous` / `prev`, `forward` / `ff`, `rewind` / `rew`.
