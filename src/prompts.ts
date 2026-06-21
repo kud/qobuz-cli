@@ -45,6 +45,17 @@ export const openUrl = async (url: string): Promise<boolean> => {
   }
 }
 
+export const copyToClipboard = async (text: string): Promise<boolean> => {
+  try {
+    const running = exec("pbcopy")
+    running.child.stdin?.end(text)
+    await running
+    return true
+  } catch {
+    return false
+  }
+}
+
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export const countdownAndOpen = async (url: string, seconds = 3) => {

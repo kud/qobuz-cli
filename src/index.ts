@@ -29,6 +29,7 @@ const main = defineCommand({
     fav,
     playlist,
     url,
+    "copy-url": url,
     open,
     play,
     next,

@@ -9,14 +9,16 @@ description: "Open items in the Qobuz app via deep links, and control the active
 
 Both take a `<type>` (`album`, `track`, `playlist`, or `artist`) and an `<id>`, and build an `open.qobuz.com` link.
 
-### `qobuz url <type> <id>`
+### `qobuz url <type> <id>` (alias `copy-url`)
 
-Prints the deep link **without** opening it — handy for sharing or piping.
+Copies the deep link to the **clipboard** (via `pbcopy`) instead of opening it — handy for pasting into a chat or note. It prints a confirmation showing exactly what was copied:
 
 ```console
 $ qobuz url album 0634904032432
-https://open.qobuz.com/album/0634904032432
+✓ copied https://open.qobuz.com/album/0634904032432
 ```
+
+`copy-url` is an alias for the same command. On a system without `pbcopy` (i.e. non-macOS) it falls back to printing the bare link to stdout, so it still composes in a pipe.
 
 ### `qobuz open <type> <id>`
 
