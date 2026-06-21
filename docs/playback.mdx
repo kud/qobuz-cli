@@ -9,16 +9,27 @@ description: "Open items in the Qobuz app via deep links, and control the active
 
 Both take a `<type>` (`album`, `track`, `playlist`, or `artist`) and an `<id>`, and build an `open.qobuz.com` link.
 
-### `qobuz url <type> <id>` (alias `copy-url`)
+### `qobuz url [type] [id]` (alias `copy-url`)
 
-Copies the deep link to the **clipboard** (via `pbcopy`) instead of opening it — handy for pasting into a chat or note. It prints a confirmation showing exactly what was copied:
+Copies an `open.qobuz.com` deep link to the **clipboard** (via `pbcopy`) and prints what it copied. Two modes:
+
+**Current track (no arguments).** With nothing after `url`, it copies the link for whatever Qobuz is **playing right now** — handy for sharing the song you're listening to:
+
+```console
+$ qobuz url
+✓ copied https://open.qobuz.com/track/284254940
+```
+
+**A specific item.** Pass a `<type>` (`album`, `track`, `playlist`, `artist`) and `<id>`:
 
 ```console
 $ qobuz url album 0634904032432
 ✓ copied https://open.qobuz.com/album/0634904032432
 ```
 
-`copy-url` is an alias for the same command. On a system without `pbcopy` (i.e. non-macOS) it falls back to printing the bare link to stdout, so it still composes in a pipe.
+`copy-url` is an alias for the same command. Without `pbcopy` (non-macOS) it falls back to printing the bare link to stdout, so it still composes in a pipe.
+
+> **How "current track" works.** macOS now-playing is a dead end for Qobuz — the app never registers with it (so Control Center sticks on Spotify/Apple Music). Instead, the CLI reads Qobuz's own queue state at `~/Library/Application Support/Qobuz/player-0.json` and takes `items[currentIndex]`. If the app isn't open and playing, you'll get `Nothing playing — couldn't read Qobuz's current track.`
 
 ### `qobuz open <type> <id>`
 
@@ -33,7 +44,7 @@ An unrecognised `<type>` exits non-zero with `type must be one of: album, track,
 
 ## ⏯️ Media keys — `play`, `next`, `previous`, `forward`, `rewind`
 
-These post synthetic media-key events to the system, exactly like the keys on a keyboard — so they control the **active** player (Qobuz, when it's playing). There's no "now playing" readout: macOS locks that down, and Qobuz exposes no playback API.
+These post synthetic media-key events to the system, exactly like the keys on a keyboard — so they control the **active** player (Qobuz, when it's playing). They're fire-and-forget: the keys give no confirmation back. (To read what's playing, the CLI goes around macOS via Qobuz's state file — see `url` above.)
 
 ```console
 $ qobuz play       # toggle play / pause
