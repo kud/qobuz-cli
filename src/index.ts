@@ -1,4 +1,5 @@
 import { defineCommand, runMain } from "citty"
+import { renderGenericUsage } from "./help.js"
 import { album } from "./commands/album.js"
 import { artist } from "./commands/artist.js"
 import { fav } from "./commands/fav.js"
@@ -49,4 +50,11 @@ const args = process.argv.slice(2)
 const [command, ...rest] = args
 const rawArgs = command && aliases[command] ? [aliases[command], ...rest] : args
 
-runMain(main, { rawArgs })
+const isTopLevelHelp =
+  rawArgs.length === 0 || rawArgs[0] === "--help" || rawArgs[0] === "-h"
+
+if (isTopLevelHelp) {
+  console.log(await renderGenericUsage(main))
+} else {
+  runMain(main, { rawArgs })
+}
