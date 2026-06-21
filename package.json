@@ -21,7 +21,7 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@kud/qobuz": "file:../qobuz",
+    "@kud/qobuz": "0.1.0",
     "citty": "0.2.2"
   },
   "devDependencies": {
