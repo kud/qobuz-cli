@@ -1,11 +1,11 @@
 import { defineCommand } from "citty"
 import { connect, deepLinkFor } from "../lib.js"
-import { openUrl } from "../prompts.js"
 
-export const open = defineCommand({
+export const url = defineCommand({
   meta: {
-    name: "open",
-    description: "Open an album/track/playlist/artist in the Qobuz app",
+    name: "url",
+    description:
+      "Print the open.qobuz.com deep-link for an item (without opening it)",
   },
   args: {
     type: {
@@ -22,7 +22,6 @@ export const open = defineCommand({
       console.error("type must be one of: album, track, playlist, artist")
       process.exit(1)
     }
-    console.log(`opening ${link}`)
-    await openUrl(link)
+    console.log(link)
   },
 })

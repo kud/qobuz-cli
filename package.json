@@ -8,13 +8,14 @@
     "qobuz": "./dist/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "native/media-key.swift"
   ],
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
-    "typecheck": "tsc --noEmit",
-    "start": "node dist/index.js"
+    "build": "npm run build:native && tsup",
+    "build:native": "swiftc -O native/media-key.swift -o native/media-key",
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit"
   },
   "engines": {
     "node": ">=20"
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@types/node": "26.0.0",
     "tsup": "8.5.1",
+    "tsx": "4.22.4",
     "typescript": "6.0.3"
   }
 }

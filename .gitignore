@@ -1,4 +1,5 @@
 node_modules
 dist
+native/media-key
 *.log
 .DS_Store

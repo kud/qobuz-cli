@@ -26,3 +26,17 @@ export const formatDuration = (seconds?: number) => {
   const remainder = String(seconds % 60).padStart(2, "0")
   return `${minutes}:${remainder}`
 }
+
+export const deepLinkFor = (
+  client: QobuzClient,
+  type: string,
+  id: string,
+): string | undefined => {
+  const builders: Record<string, (id: string) => string> = {
+    album: (value) => client.deepLink.album(value),
+    track: (value) => client.deepLink.track(Number(value)),
+    playlist: (value) => client.deepLink.playlist(Number(value)),
+    artist: (value) => client.deepLink.artist(Number(value)),
+  }
+  return builders[type]?.(id)
+}
