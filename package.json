@@ -1,0 +1,31 @@
+{
+  "name": "@kud/qobuz-cli",
+  "version": "0.0.0",
+  "description": "Command-line interface for Qobuz — search, library, and quick-open in the app",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "qobuz": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "start": "node dist/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@kud/qobuz": "file:../qobuz",
+    "citty": "0.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "26.0.0",
+    "tsup": "8.5.1",
+    "typescript": "6.0.3"
+  }
+}
