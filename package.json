@@ -4,6 +4,10 @@
   "description": "Command-line interface for Qobuz — search, library, and quick-open in the app",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kud/qobuz-cli.git"
+  },
   "bin": {
     "qobuz": "./dist/index.js"
   },
