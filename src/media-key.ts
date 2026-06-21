@@ -21,7 +21,7 @@ const root = findPackageRoot()
 const source = join(root, "native", "media-key.swift")
 const binary = join(root, "native", "media-key")
 
-export type MediaKey = "play" | "next" | "previous"
+export type MediaKey = "play" | "next" | "previous" | "forward" | "rewind"
 
 const ensureBinary = async () => {
   if (!existsSync(binary)) await exec("swiftc", ["-O", source, "-o", binary])

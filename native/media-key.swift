@@ -4,8 +4,10 @@ import Cocoa
 // IOKit ev_keymap.h media key codes.
 let keyCodes: [String: Int32] = [
   "play": 16, // NX_KEYTYPE_PLAY — play/pause toggle
-  "next": 17, // NX_KEYTYPE_NEXT
-  "previous": 18, // NX_KEYTYPE_PREVIOUS
+  "next": 17, // NX_KEYTYPE_NEXT — skip to next track
+  "previous": 18, // NX_KEYTYPE_PREVIOUS — skip to previous track
+  "forward": 19, // NX_KEYTYPE_FAST — fast-forward within the track
+  "rewind": 20, // NX_KEYTYPE_REWIND — rewind within the track
 ]
 
 func postMediaKey(_ key: Int32) {
@@ -36,7 +38,7 @@ let fail = { (message: String, code: Int32) in
 }
 
 guard let name = CommandLine.arguments.dropFirst().first, let key = keyCodes[name] else {
-  fail("usage: media-key <play|next|previous>", 64)
+  fail("usage: media-key <play|next|previous|forward|rewind>", 64)
   exit(64)
 }
 

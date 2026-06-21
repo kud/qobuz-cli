@@ -5,7 +5,7 @@ import { fav } from "./commands/fav.js"
 import { login } from "./commands/login.js"
 import { logout } from "./commands/logout.js"
 import { open } from "./commands/open.js"
-import { next, play, previous } from "./commands/playback.js"
+import { forward, next, play, previous, rewind } from "./commands/playback.js"
 import { playlist } from "./commands/playlist.js"
 import { search } from "./commands/search.js"
 import { similar } from "./commands/similar.js"
@@ -35,6 +35,10 @@ const main = defineCommand({
     next,
     previous,
     prev: previous,
+    forward,
+    ff: forward,
+    rewind,
+    rew: rewind,
   },
 })
 

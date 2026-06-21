@@ -25,3 +25,13 @@ export const previous = playbackCommand(
   "Go to the previous track",
   "previous",
 )
+export const forward = playbackCommand(
+  "forward",
+  "Fast-forward within the current track",
+  "forward",
+)
+export const rewind = playbackCommand(
+  "rewind",
+  "Rewind within the current track",
+  "rewind",
+)

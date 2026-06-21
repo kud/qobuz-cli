@@ -31,16 +31,19 @@ opening https://open.qobuz.com/album/0634904032432
 
 An unrecognised `<type>` exits non-zero with `type must be one of: album, track, playlist, artist`.
 
-## ⏯️ Media keys — `play`, `next`, `previous`
+## ⏯️ Media keys — `play`, `next`, `previous`, `forward`, `rewind`
 
 These post synthetic media-key events to the system, exactly like the keys on a keyboard — so they control the **active** player (Qobuz, when it's playing). There's no "now playing" readout: macOS locks that down, and Qobuz exposes no playback API.
 
 ```console
 $ qobuz play       # toggle play / pause
 $ qobuz next       # skip to the next track
-$ qobuz previous   # go to the previous track
-$ qobuz prev       # alias for previous
+$ qobuz previous   # go to the previous track  (alias: prev)
+$ qobuz forward    # fast-forward within the current track  (alias: ff)
+$ qobuz rewind     # rewind within the current track  (alias: rew)
 ```
+
+**Skip vs scrub.** `next` / `previous` jump between whole tracks; `forward` / `rewind` scrub _within_ the current track. They're distinct media keys (`NX_KEYTYPE_FAST` / `NX_KEYTYPE_REWIND`), so whether they seek depends on the active player honouring them.
 
 ### 🍏 macOS only + Accessibility permission
 
