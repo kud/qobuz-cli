@@ -1,0 +1,77 @@
+---
+title: "qobuz-cli"
+description: "Qobuz from the command line — search, library, playlists, deep-link open, and media-key playback control"
+---
+
+`qobuz-cli` is a fast command-line client for [Qobuz](https://www.qobuz.com): search the catalogue, read rich metadata, manage your favourites and playlists, open anything in the desktop app, and control playback — all without leaving the terminal. It's a thin surface over the [`@kud/qobuz`](https://kud.io/projects/qobuz) core library; the CLI only formats output, the core does the work.
+
+## 🚀 Install
+
+```sh
+npm install -g @kud/qobuz-cli
+```
+
+This puts a `qobuz` binary on your `PATH`. Requires Node.js ≥ 20 (the core uses the built-in `fetch`). Playback control is macOS-only (see the **Playback & opening** page).
+
+## ⚡ First run
+
+Authenticate once — `qobuz login` opens the Qobuz web player and asks you to paste a session token from your logged-in browser (Qobuz gates password login behind captchas, so the CLI borrows the browser's token instead). The token is validated and stored in the macOS **Keychain**:
+
+```console
+$ qobuz login
+Connect your Qobuz account.
+In the page that opens: log in, then DevTools → Network, click any
+request to www.qobuz.com/api.json and copy these from its headers:
+
+  X-App-Id [123456789]:
+  X-User-Auth-Token: ································
+
+  Validating… ✓ connected. Session saved to the Keychain (service "qobuz").
+```
+
+From then on every command reuses that stored session. Full detail on the **Authentication** page.
+
+```console
+$ qobuz search "radiohead"
+$ qobuz fav add albums 0634904032432
+$ qobuz open album 0634904032432
+```
+
+## 🗺️ Command map
+
+| Command                                          | What it does                                           |
+| ------------------------------------------------ | ------------------------------------------------------ |
+| `qobuz login` / `logout`                         | Connect (store token) / disconnect (clear Keychain).   |
+| `qobuz search <query>`                           | Search albums, artists, and tracks in one call.        |
+| `qobuz album\|artist\|track <id>`                | Show metadata for one item.                            |
+| `qobuz similar <artistId>`                       | Artists similar to the given one.                      |
+| `qobuz fav list\|add\|remove`                    | Manage favourites.                                     |
+| `qobuz playlist list\|show\|create\|add\|remove` | Manage playlists.                                      |
+| `qobuz url <type> <id>`                          | Print an `open.qobuz.com` deep link (without opening). |
+| `qobuz open <type> <id>`                         | Open an item in the Qobuz app.                         |
+| `qobuz play\|next\|previous`                     | Control the active player via media keys (macOS).      |
+
+Every command groups onto a page: auth on **Authentication**, browsing/metadata on **Search & metadata**, favourites and playlists on **Library**, and the desktop-control commands on **Playback & opening**.
+
+## 🛠️ Built-in help
+
+Citty (the arg parser) gives every command and subcommand a `--help`:
+
+```console
+$ qobuz --help
+$ qobuz playlist --help
+$ qobuz fav add --help
+```
+
+## 🧑‍💻 Develop from source
+
+Clone the repo, then iterate against the core without rebuilding:
+
+```sh
+npm install
+npm run dev -- search "radiohead"   # run from source via tsx
+npm run build                        # compile native helper + bundle with tsup
+npm run typecheck
+```
+
+There's no `start` script — it isn't meaningful for a CLI. `npm run dev -- <args>` runs the TypeScript entry directly through `tsx`; everything after `--` is passed to `qobuz`.

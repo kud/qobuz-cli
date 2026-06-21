@@ -1,0 +1,49 @@
+---
+title: "Playback & opening"
+description: "Open items in the Qobuz app via deep links, and control the active player with media keys"
+---
+
+`qobuz-cli` doesn't stream audio itself — the official Qobuz app stays the player. Two mechanisms drive it: **deep links** (`open` / `url`) that point the app at an item, and **media keys** (`play` / `next` / `previous`) that control whatever is currently playing.
+
+## 🔗 Deep links — `open` and `url`
+
+Both take a `<type>` (`album`, `track`, `playlist`, or `artist`) and an `<id>`, and build an `open.qobuz.com` link.
+
+### `qobuz url <type> <id>`
+
+Prints the deep link **without** opening it — handy for sharing or piping.
+
+```console
+$ qobuz url album 0634904032432
+https://open.qobuz.com/album/0634904032432
+```
+
+### `qobuz open <type> <id>`
+
+Opens the item in the Qobuz app (falls back to the web player if the app isn't installed).
+
+```console
+$ qobuz open album 0634904032432
+opening https://open.qobuz.com/album/0634904032432
+```
+
+An unrecognised `<type>` exits non-zero with `type must be one of: album, track, playlist, artist`.
+
+## ⏯️ Media keys — `play`, `next`, `previous`
+
+These post synthetic media-key events to the system, exactly like the keys on a keyboard — so they control the **active** player (Qobuz, when it's playing). There's no "now playing" readout: macOS locks that down, and Qobuz exposes no playback API.
+
+```console
+$ qobuz play       # toggle play / pause
+$ qobuz next       # skip to the next track
+$ qobuz previous   # go to the previous track
+$ qobuz prev       # alias for previous
+```
+
+### 🍏 macOS only + Accessibility permission
+
+Playback control is **macOS-only** and posts HID events through a tiny Swift helper bundled with the package (compiled on first use via `swiftc`). For the events to take effect, your **terminal app must be granted Accessibility permission**:
+
+> **System Settings → Privacy & Security → Accessibility** → enable your terminal (Terminal, iTerm, Ghostty, …).
+
+The spawned helper inherits the terminal's permission. Without it, the command exits cleanly but **nothing happens** — if a key seems to do nothing, this is almost always why. (Compilation needs the Xcode command-line tools: `xcode-select --install`.)

@@ -1,0 +1,89 @@
+---
+title: "Library"
+description: "Manage your Qobuz favourites and playlists from the terminal"
+---
+
+These commands read and write your account: favourites (albums, artists, tracks) and full playlist management. They need a connected session (see **Authentication**).
+
+## ⭐ Favourites — `qobuz fav`
+
+### `qobuz fav list [--type albums|artists|tracks]`
+
+Lists your favourites. `--type` selects the category (default `albums`).
+
+```console
+$ qobuz fav list --type albums
+  0634904032432  Radiohead — OK Computer
+  0060253764352  Aphex Twin — Selected Ambient Works
+```
+
+### `qobuz fav add <type> <id>`
+
+Adds an item to favourites. `<type>` is `albums`, `artists`, or `tracks`; `<id>` is that item's id.
+
+```console
+$ qobuz fav add albums 0634904032432
+✓ added albums 0634904032432 to favourites
+```
+
+### `qobuz fav remove <type> <id>`
+
+Removes an item from favourites.
+
+```console
+$ qobuz fav remove albums 0634904032432
+✓ removed albums 0634904032432 from favourites
+```
+
+## 📝 Playlists — `qobuz playlist`
+
+### `qobuz playlist list`
+
+Your playlists, with track counts.
+
+```console
+$ qobuz playlist list
+  65996412  Focus       (24 tracks)
+  65996501  Late nights (11 tracks)
+```
+
+### `qobuz playlist show <id>`
+
+A single playlist's name, description, and a deep link. `<id>` is the playlist **number**.
+
+```console
+$ qobuz playlist show 65996412
+Focus  (24 tracks)
+Instrumental, no lyrics.
+open: https://open.qobuz.com/playlist/65996412
+```
+
+### `qobuz playlist create <name> [--public]`
+
+Creates a playlist (private by default; pass `--public` to make it public) and prints its new id.
+
+```console
+$ qobuz playlist create "Focus"
+✓ created playlist "Focus" [65996412]
+
+$ qobuz playlist create "Shared mix" --public
+✓ created playlist "Shared mix" [65996777]
+```
+
+### `qobuz playlist add <playlistId> <trackId>`
+
+Adds a track to a playlist. Both arguments are **numbers**.
+
+```console
+$ qobuz playlist add 65996412 33933680
+✓ added track 33933680 to playlist 65996412
+```
+
+### `qobuz playlist remove <id>`
+
+> **⚠️ This deletes the entire playlist — not a track within it.** There is no "remove a track from a playlist" command in the CLI today; `remove` maps to deleting the whole playlist. Double-check the id before running it.
+
+```console
+$ qobuz playlist remove 65996412
+✓ deleted playlist 65996412
+```

@@ -1,0 +1,4 @@
+{
+  "title": "qobuz-cli",
+  "pages": ["index", "authentication", "search", "library", "playback"]
+}

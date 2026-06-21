@@ -1,0 +1,50 @@
+---
+title: "Authentication"
+description: "Connect your Qobuz account with a browser session token, stored in the macOS Keychain"
+---
+
+Qobuz defends password login with captchas and IP-flagging, so `qobuz-cli` never asks for your password. Instead it borrows the **`user_auth_token`** that your logged-in browser already holds, validates it, and stores it in the macOS Keychain. Every other command reuses that stored session.
+
+## 🔑 `qobuz login`
+
+Connects your account. The flow:
+
+1. Prints instructions and opens [play.qobuz.com/login](https://play.qobuz.com/login) after a short countdown.
+2. Pre-fills `X-App-Id` by scraping the current app id from the web-player bundle — press <kbd>Enter</kbd> to accept the suggestion in brackets.
+3. Prompts for `X-User-Auth-Token` (input is hidden as you paste).
+4. Validates the pair against the live API, then saves `{ appId, token }` to the Keychain.
+
+```console
+$ qobuz login
+Connect your Qobuz account.
+In the page that opens: log in, then DevTools → Network, click any
+request to www.qobuz.com/api.json and copy these from its headers:
+
+  X-App-Id [123456789]:
+  X-User-Auth-Token: ································
+
+  Validating… ✓ connected. Session saved to the Keychain (service "qobuz").
+```
+
+### Finding the token in your browser
+
+1. Open [play.qobuz.com](https://play.qobuz.com) and log in.
+2. Open DevTools → **Network**, and click any request to `www.qobuz.com/api.json`.
+3. From its **Request Headers**, copy `X-User-Auth-Token` (and `X-App-Id` if you'd rather not use the scraped default).
+
+If validation fails (`✗ …`), the token was rejected — grab a fresh one from a currently logged-in session and retry. Nothing is saved unless validation passes.
+
+## 🚪 `qobuz logout`
+
+Clears the stored session from the Keychain. The next command will require `qobuz login` again.
+
+```console
+$ qobuz logout
+✓ logged out. Keychain session cleared.
+```
+
+## 🗄️ Where credentials live
+
+Credentials are kept in the **macOS Keychain** under service `qobuz`, account `credentials` — never in a plaintext dotfile, and no password is ever stored. You can inspect the entry in **Keychain Access** (search for "qobuz") or with the `security` CLI.
+
+Under the hood the CLI uses the core's `createKeychainStore()`; the same token works from any `@kud/qobuz` consumer pointed at the same store. See the [core Authentication docs](https://kud.io/projects/qobuz/docs/authentication) for the credential-store model.

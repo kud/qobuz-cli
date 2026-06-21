@@ -1,0 +1,78 @@
+---
+title: "Search & metadata"
+description: "Search the catalogue and read album, artist, and track details"
+---
+
+These commands are read-only catalogue lookups. They print **IDs in the first column** — copy those IDs into `fav`, `playlist`, `open`, and `url` commands.
+
+> **ID types matter.** Album IDs are long **strings** (e.g. `0634904032432`); artist, track, and playlist IDs are **numbers**. The CLI accepts whatever you paste — just keep the right value with the right command.
+
+## 🔍 `qobuz search <query>`
+
+Searches albums, artists, and tracks in a single call. `--limit` caps results **per category** (default `10`).
+
+```console
+$ qobuz search "radiohead" --limit 3
+
+Albums
+  0634904032432  Radiohead — OK Computer
+  0634904078160  Radiohead — In Rainbows
+
+Artists
+  43840  Radiohead
+
+Tracks
+  33933680  Radiohead — Paranoid Android  3:50
+```
+
+The leading value on each line is the ID you feed to other commands.
+
+## 💿 `qobuz album <id>`
+
+Album metadata. `<id>` is the album **string** id.
+
+```console
+$ qobuz album 0634904032432
+OK Computer
+by Radiohead
+12 tracks · released 1997-05-21 · Hi-Res
+open: https://open.qobuz.com/album/0634904032432
+```
+
+The `Hi-Res` marker only appears when the album is available in Hi-Res.
+
+## 🎤 `qobuz artist <id>`
+
+Artist metadata. `<id>` is the artist **number**.
+
+```console
+$ qobuz artist 43840
+Radiohead
+30 albums
+open: https://open.qobuz.com/artist/43840
+```
+
+## 🎵 `qobuz track <id>`
+
+Track metadata, including its album and performing artist. `<id>` is the track **number**.
+
+```console
+$ qobuz track 33933680
+Paranoid Android
+by Radiohead · OK Computer
+3:50 · Hi-Res
+open: https://open.qobuz.com/track/33933680
+```
+
+## 🧭 `qobuz similar <artistId>`
+
+Lists artists similar to the given one — a quick way to branch out from something you like.
+
+```console
+$ qobuz similar 43840
+  2070   Thom Yorke
+  26390  Atoms for Peace
+  17763  Portishead
+```
+
+Each line is `id  name`; feed an id straight back into `qobuz artist` or `qobuz open artist`.
