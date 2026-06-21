@@ -29,17 +29,24 @@ const main = defineCommand({
     fav,
     playlist,
     url,
-    "copy-url": url,
     open,
     play,
     next,
     previous,
-    prev: previous,
     forward,
-    ff: forward,
     rewind,
-    rew: rewind,
   },
 })
 
-runMain(main)
+const aliases: Record<string, string> = {
+  "copy-url": "url",
+  prev: "previous",
+  ff: "forward",
+  rew: "rewind",
+}
+
+const args = process.argv.slice(2)
+const [command, ...rest] = args
+const rawArgs = command && aliases[command] ? [aliases[command], ...rest] : args
+
+runMain(main, { rawArgs })
