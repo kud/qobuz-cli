@@ -1,11 +1,10 @@
 import { defineCommand } from "citty"
-import { type QobuzClient } from "@kud/qobuz"
+import { readNowPlayingTrackId, type QobuzClient } from "@kud/qobuz"
 import { connect, deepLinkFor } from "../lib.js"
-import { currentTrackId } from "../now-playing.js"
 import { copyToClipboard } from "../prompts.js"
 
 const currentTrackLink = async (client: QobuzClient) => {
-  const trackId = await currentTrackId()
+  const trackId = await readNowPlayingTrackId()
   if (!trackId) {
     console.error(
       "Nothing playing — couldn't read Qobuz's current track. Is the Qobuz app open and playing?",

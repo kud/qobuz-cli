@@ -1,6 +1,6 @@
 {
   "name": "@kud/qobuz-cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Command-line interface for Qobuz — search, library, and quick-open in the app",
   "type": "module",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@kud/qobuz": "0.1.0",
+    "@kud/qobuz": "0.3.0",
     "citty": "0.2.2"
   },
   "devDependencies": {
