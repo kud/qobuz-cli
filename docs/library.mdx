@@ -87,3 +87,34 @@ $ qobuz playlist add 65996412 33933680
 $ qobuz playlist remove 65996412
 ✓ deleted playlist 65996412
 ```
+
+## 📊 Collection stats — `qobuz stats`
+
+Analytics about your library, computed from the Qobuz **desktop app's** local database — no account call, no auth. macOS only.
+
+```console
+$ qobuz stats --limit 6
+Collection: 543 albums · 401 artists · 699 offline tracks · 3055 saved tracks
+
+Quality (offline tracks)
+  16-bit  507  72.5%
+  24-bit  192  27.5%
+
+Top genres
+  Rock                 585
+  Alternative & Indie  576
+  Metal                484
+  …
+
+Top artists (by albums)
+  In Flames          10
+  Killswitch Engage  8
+  …
+
+Added recently
+  2026-06  51
+  2026-05  66
+  …
+```
+
+`--limit` caps each breakdown (default `10`). Quality and top-artists come from your **offline/downloaded** tracks; genres and labels from your broader **saved** library. If the Qobuz desktop app isn't installed, it prints `No Qobuz library found`.

@@ -10,6 +10,7 @@ import { forward, next, play, previous, rewind } from "./commands/playback.js"
 import { playlist } from "./commands/playlist.js"
 import { search } from "./commands/search.js"
 import { similar } from "./commands/similar.js"
+import { stats } from "./commands/stats.js"
 import { track } from "./commands/track.js"
 import { url } from "./commands/url.js"
 
@@ -29,6 +30,7 @@ const main = defineCommand({
     similar,
     fav,
     playlist,
+    stats,
     url,
     open,
     play,
