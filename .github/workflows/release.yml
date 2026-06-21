@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
       - run: npm install
       # The published package ships native/media-key.swift (compiled at runtime
       # on macOS); CI only needs the JS bundle, so skip the swiftc build step.
