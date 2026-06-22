@@ -1,6 +1,6 @@
 {
   "name": "@kud/qobuz-cli",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Command-line interface for Qobuz — search, library, and quick-open in the app",
   "type": "module",
   "license": "MIT",
