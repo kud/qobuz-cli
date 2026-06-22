@@ -5,5 +5,7 @@ export default defineConfig({
   format: ["esm"],
   target: "node20",
   clean: true,
+  splitting: false,
+  external: ["@kud/macos-media-keys"],
   banner: { js: "#!/usr/bin/env node" },
 })

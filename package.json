@@ -23,9 +23,11 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@kud/macos-media-keys": "0.1.0",
     "@kud/qobuz": "0.5.0",
     "citty": "0.2.2"
+  },
+  "optionalDependencies": {
+    "@kud/macos-media-keys": "0.1.0"
   },
   "devDependencies": {
     "@types/node": "26.0.0",

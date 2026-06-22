@@ -1,14 +1,15 @@
 import { defineCommand } from "citty"
-import { type MediaKey, sendMediaKey } from "@kud/macos-media-keys"
+import type { MediaKey } from "@kud/macos-media-keys"
 
 const playbackCommand = (name: string, description: string, key: MediaKey) =>
   defineCommand({
     meta: { name, description },
     run: async () => {
       try {
+        const { sendMediaKey } = await import("@kud/macos-media-keys")
         await sendMediaKey(key)
       } catch (error) {
-        console.error((error as Error).message)
+        console.error((error as Error).message ?? `playback (${key}) failed`)
         process.exit(1)
       }
     },
