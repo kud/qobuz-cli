@@ -4,6 +4,18 @@ All notable changes to this project are documented here.
 
 ---
 
+## Unreleased — 2026-06-22
+
+### Highlights
+
+- **All CLI commands now render rich, readable terminal output.** A new shared `src/ui.ts` module brings consistent ANSI styling across every command — bold titles, dim metadata, accent-coloured names, muted IDs, and aligned column tables. The `search`, `album`, `artist`, `track`, `similar`, `fav`, and `playlist` commands all produce polished output without any extra flags. ([c26d6ac](https://github.com/kud/qobuz-cli/commit/c26d6ace6aa8a5a1bcee5882060808e0054df18f))
+
+- **`qobuz stats` gains bar charts with localised number formatting.** The stats command now renders horizontal bar graphs for genre and bit-depth breakdowns, making the distribution data immediately scannable at a glance. ([c26d6ac](https://github.com/kud/qobuz-cli/commit/c26d6ace6aa8a5a1bcee5882060808e0054df18f))
+
+- **Output degrades gracefully when piped.** When stdout is not a TTY (e.g. redirected to a file or another command), all ANSI colour and formatting is stripped automatically — plain text passes through cleanly for scripting. ([c26d6ac](https://github.com/kud/qobuz-cli/commit/c26d6ace6aa8a5a1bcee5882060808e0054df18f))
+
+---
+
 ## 0.3.0 — 2026-06-22
 
 ### Highlights
