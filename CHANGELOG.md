@@ -4,6 +4,18 @@ All notable changes to this project are documented here.
 
 ---
 
+## 0.3.0 — 2026-06-22
+
+### Highlights
+
+- **See your Qobuz collection in numbers with `qobuz stats`.** The new command reads the Qobuz desktop app's local library database (no account call or auth required) and prints a full analytics breakdown: genre distribution, hi-res and bit-depth ratios, top artists by album count, top labels, and a month-by-month "recently added" timeline. macOS only. ([98c0bd1](https://github.com/kud/qobuz-cli/commit/98c0bd1e85f6cdf9be4cec023a95f9cbc5af7abb))
+
+### Documentation
+
+- Docs index rewritten as an orientation guide rather than a copy of the README, giving first-time visitors a clearer entry point into the command reference. ([b63fc63](https://github.com/kud/qobuz-cli/commit/b63fc630cf8dcf3c380a3893a62e61998820579a))
+
+---
+
 ## 0.2.0 — 2026-06-22
 
 ### Highlights
