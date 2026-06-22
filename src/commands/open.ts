@@ -1,5 +1,5 @@
 import { defineCommand } from "citty"
-import { connect, deepLinkFor } from "../lib.js"
+import { appLinkFor, connect } from "../lib.js"
 import { openUrl } from "../prompts.js"
 
 export const open = defineCommand({
@@ -17,7 +17,7 @@ export const open = defineCommand({
   },
   run: async ({ args }) => {
     const client = await connect()
-    const link = deepLinkFor(client, args.type, args.id)
+    const link = appLinkFor(client, args.type, args.id)
     if (!link) {
       console.error("type must be one of: album, track, playlist, artist")
       process.exit(1)

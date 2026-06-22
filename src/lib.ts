@@ -1,6 +1,7 @@
 import {
   createKeychainStore,
   createQobuzClient,
+  type DeepLink,
   type QobuzClient,
 } from "@kud/qobuz"
 
@@ -27,16 +28,22 @@ export const formatDuration = (seconds?: number) => {
   return `${minutes}:${remainder}`
 }
 
-export const deepLinkFor = (
-  client: QobuzClient,
+const linkFor = (
+  links: DeepLink,
   type: string,
   id: string,
 ): string | undefined => {
   const builders: Record<string, (id: string) => string> = {
-    album: (value) => client.deepLink.album(value),
-    track: (value) => client.deepLink.track(Number(value)),
-    playlist: (value) => client.deepLink.playlist(Number(value)),
-    artist: (value) => client.deepLink.artist(Number(value)),
+    album: (value) => links.album(value),
+    track: (value) => links.track(Number(value)),
+    playlist: (value) => links.playlist(Number(value)),
+    artist: (value) => links.artist(Number(value)),
   }
   return builders[type]?.(id)
 }
+
+export const deepLinkFor = (client: QobuzClient, type: string, id: string) =>
+  linkFor(client.deepLink, type, id)
+
+export const appLinkFor = (client: QobuzClient, type: string, id: string) =>
+  linkFor(client.appLink, type, id)
