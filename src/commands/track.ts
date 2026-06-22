@@ -1,5 +1,6 @@
 import { defineCommand } from "citty"
 import { connect, formatDuration } from "../lib.js"
+import { bold, dim, link } from "../ui.js"
 
 export const track = defineCommand({
   meta: { name: "track", description: "Show track details" },
@@ -9,13 +10,17 @@ export const track = defineCommand({
   run: async ({ args }) => {
     const client = await connect()
     const track = await client.tracks.get(Number(args.id))
-    console.log(track.title)
+    const meta = [
+      formatDuration(track.duration),
+      track.hires ? "Hi-Res" : undefined,
+    ]
+      .filter(Boolean)
+      .join(" · ")
+    console.log(`\n${bold(`🎵  ${track.title}`)}`)
     console.log(
-      `by ${track.artist?.name ?? "?"}${track.album ? ` · ${track.album.title}` : ""}`,
+      `  ${dim(`by ${track.artist?.name ?? "?"}${track.album ? ` · ${track.album.title}` : ""}`)}`,
     )
-    console.log(
-      `${formatDuration(track.duration)}${track.hires ? " · Hi-Res" : ""}`,
-    )
-    console.log(`open: ${client.deepLink.track(track.id)}`)
+    if (meta) console.log(`  ${dim(meta)}`)
+    console.log(`  ${link(client.deepLink.track(track.id))}`)
   },
 })

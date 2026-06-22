@@ -1,6 +1,7 @@
 import { defineCommand } from "citty"
 import type { FavouriteType } from "@kud/qobuz"
 import { connect } from "../lib.js"
+import { accent, columns, dim, heading, muted, success } from "../ui.js"
 
 const list = defineCommand({
   meta: { name: "list", description: "List favourites" },
@@ -14,16 +15,41 @@ const list = defineCommand({
   run: async ({ args }) => {
     const client = await connect()
     const favourites = await client.favourites.list(args.type as FavouriteType)
-    for (const album of favourites.albums)
+    if (favourites.albums.length) {
+      heading("💿  Albums")
       console.log(
-        `  ${album.id}  ${album.artist?.name ?? "?"} — ${album.title}`,
+        columns(
+          favourites.albums.map((album) => [
+            accent(album.title),
+            dim(album.artist?.name ?? "?"),
+            muted(String(album.id)),
+          ]),
+        ),
       )
-    for (const artist of favourites.artists)
-      console.log(`  ${artist.id}  ${artist.name}`)
-    for (const track of favourites.tracks)
+    }
+    if (favourites.artists.length) {
+      heading("🎤  Artists")
       console.log(
-        `  ${track.id}  ${track.artist?.name ?? "?"} — ${track.title}`,
+        columns(
+          favourites.artists.map((artist) => [
+            accent(artist.name),
+            muted(String(artist.id)),
+          ]),
+        ),
       )
+    }
+    if (favourites.tracks.length) {
+      heading("🎵  Tracks")
+      console.log(
+        columns(
+          favourites.tracks.map((track) => [
+            accent(track.title),
+            dim(track.artist?.name ?? "?"),
+            muted(String(track.id)),
+          ]),
+        ),
+      )
+    }
   },
 })
 
@@ -44,7 +70,7 @@ const add = defineCommand({
   run: async ({ args }) => {
     const client = await connect()
     await client.favourites.add(args.type as FavouriteType, args.id)
-    console.log(`✓ added ${args.type} ${args.id} to favourites`)
+    success(`added ${args.type} ${args.id} to favourites`)
   },
 })
 
@@ -65,7 +91,7 @@ const remove = defineCommand({
   run: async ({ args }) => {
     const client = await connect()
     await client.favourites.remove(args.type as FavouriteType, args.id)
-    console.log(`✓ removed ${args.type} ${args.id} from favourites`)
+    success(`removed ${args.type} ${args.id} from favourites`)
   },
 })
 

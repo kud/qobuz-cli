@@ -1,15 +1,23 @@
 import { defineCommand } from "citty"
 import { readLibraryStats } from "@kud/qobuz"
+import { accent, bar, bold, dim } from "../ui.js"
 
+const n = (value: number) => value.toLocaleString("en-US")
 const pct = (count: number, total: number) =>
   total ? `${Math.round((1000 * count) / total) / 10}%` : ""
 
-const section = (title: string, rows: Array<[string, string]>) => {
+type Row = { label: string; value: number; suffix?: string }
+
+const chart = (title: string, rows: Row[], scaleMax?: number) => {
   if (!rows.length) return
-  const width = Math.max(...rows.map(([label]) => label.length))
-  console.log(`\n${title}`)
-  for (const [label, value] of rows)
-    console.log(`  ${label.padEnd(width)}  ${value}`)
+  const max = scaleMax ?? Math.max(...rows.map((r) => r.value))
+  const labelWidth = Math.max(...rows.map((r) => r.label.length))
+  const valueWidth = Math.max(...rows.map((r) => n(r.value).length))
+  console.log(`\n${bold(title)}`)
+  for (const { label, value, suffix } of rows) {
+    const line = `  ${label.padEnd(labelWidth)}  ${accent(bar(value, max))}  ${dim(n(value).padStart(valueWidth))}`
+    console.log(suffix ? `${line}  ${dim(suffix)}` : line)
+  }
 }
 
 export const stats = defineCommand({
@@ -32,31 +40,35 @@ export const stats = defineCommand({
     const { totals, quality, topGenres, topLabels, topArtists, recentlyAdded } =
       data
     console.log(
-      `Collection: ${totals.offlineAlbums} albums · ${totals.offlineArtists} artists · ${totals.offlineTracks} offline tracks · ${totals.savedTracks} saved tracks`,
+      `${bold("📊  Collection")}  ${dim(
+        `${n(totals.offlineAlbums)} albums · ${n(totals.offlineArtists)} artists · ${n(totals.offlineTracks)} offline · ${n(totals.savedTracks)} saved`,
+      )}`,
     )
 
-    section(
-      "Quality (offline tracks)",
-      quality.map((q) => [
-        `${q.bitDepth}-bit`,
-        `${q.count}  ${pct(q.count, totals.offlineTracks)}`,
-      ]),
+    chart(
+      "🎚️  Quality · offline tracks",
+      quality.map((q) => ({
+        label: `${q.bitDepth}-bit`,
+        value: q.count,
+        suffix: pct(q.count, totals.offlineTracks),
+      })),
+      totals.offlineTracks,
     )
-    section(
-      "Top genres",
-      topGenres.map((g) => [g.name, String(g.count)]),
+    chart(
+      "🎸  Top genres",
+      topGenres.map((g) => ({ label: g.name, value: g.count })),
     )
-    section(
-      "Top artists (by albums)",
-      topArtists.map((a) => [a.name, String(a.count)]),
+    chart(
+      "🎤  Top artists · by albums",
+      topArtists.map((a) => ({ label: a.name, value: a.count })),
     )
-    section(
-      "Top labels",
-      topLabels.map((l) => [l.name, String(l.count)]),
+    chart(
+      "🏷️  Top labels",
+      topLabels.map((l) => ({ label: l.name, value: l.count })),
     )
-    section(
-      "Added recently",
-      recentlyAdded.map((m) => [m.month, String(m.count)]),
+    chart(
+      "📅  Added recently",
+      recentlyAdded.map((m) => ({ label: m.month, value: m.count })),
     )
   },
 })

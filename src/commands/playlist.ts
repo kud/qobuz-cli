@@ -1,16 +1,32 @@
 import { defineCommand } from "citty"
 import { connect } from "../lib.js"
+import {
+  accent,
+  bold,
+  columns,
+  dim,
+  heading,
+  link,
+  muted,
+  success,
+} from "../ui.js"
 
 const list = defineCommand({
   meta: { name: "list", description: "List your playlists" },
   run: async () => {
     const client = await connect()
     const playlists = await client.playlists.listForUser()
-    for (const playlist of playlists) {
-      console.log(
-        `  ${playlist.id}  ${playlist.name}  (${playlist.tracksCount ?? 0} tracks)`,
-      )
-    }
+    if (!playlists.length) return
+    heading("📝  Playlists")
+    console.log(
+      columns(
+        playlists.map((playlist) => [
+          accent(playlist.name),
+          dim(`${playlist.tracksCount ?? 0} tracks`),
+          muted(String(playlist.id)),
+        ]),
+      ),
+    )
   },
 })
 
@@ -22,9 +38,10 @@ const show = defineCommand({
   run: async ({ args }) => {
     const client = await connect()
     const playlist = await client.playlists.get(Number(args.id))
-    console.log(`${playlist.name}  (${playlist.tracksCount ?? 0} tracks)`)
-    if (playlist.description) console.log(playlist.description)
-    console.log(`open: ${client.deepLink.playlist(playlist.id)}`)
+    console.log(`\n${bold(`📝  ${playlist.name}`)}`)
+    console.log(`  ${dim(`${playlist.tracksCount ?? 0} tracks`)}`)
+    if (playlist.description) console.log(`  ${dim(playlist.description)}`)
+    console.log(`  ${link(client.deepLink.playlist(playlist.id))}`)
   },
 })
 
@@ -44,7 +61,7 @@ const create = defineCommand({
       name: args.name,
       isPublic: args.public,
     })
-    console.log(`✓ created playlist "${playlist.name}" [${playlist.id}]`)
+    success(`created playlist "${playlist.name}" [${playlist.id}]`)
   },
 })
 
@@ -63,7 +80,7 @@ const add = defineCommand({
     await client.playlists.addTracks(Number(args.playlist), [
       Number(args.track),
     ])
-    console.log(`✓ added track ${args.track} to playlist ${args.playlist}`)
+    success(`added track ${args.track} to playlist ${args.playlist}`)
   },
 })
 
@@ -75,7 +92,7 @@ const remove = defineCommand({
   run: async ({ args }) => {
     const client = await connect()
     await client.playlists.remove(Number(args.id))
-    console.log(`✓ deleted playlist ${args.id}`)
+    success(`deleted playlist ${args.id}`)
   },
 })
 

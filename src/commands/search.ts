@@ -1,5 +1,6 @@
 import { defineCommand } from "citty"
 import { connect, formatDuration } from "../lib.js"
+import { accent, columns, dim, heading, muted } from "../ui.js"
 
 export const search = defineCommand({
   meta: {
@@ -21,25 +22,41 @@ export const search = defineCommand({
     })
 
     if (results.albums.length) {
-      console.log("\nAlbums")
-      for (const album of results.albums) {
-        console.log(
-          `  ${album.id}  ${album.artist?.name ?? "?"} — ${album.title}`,
-        )
-      }
+      heading("💿  Albums")
+      console.log(
+        columns(
+          results.albums.map((album) => [
+            accent(album.title),
+            dim(album.artist?.name ?? "?"),
+            muted(String(album.id)),
+          ]),
+        ),
+      )
     }
     if (results.artists.length) {
-      console.log("\nArtists")
-      for (const artist of results.artists)
-        console.log(`  ${artist.id}  ${artist.name}`)
+      heading("🎤  Artists")
+      console.log(
+        columns(
+          results.artists.map((artist) => [
+            accent(artist.name),
+            muted(String(artist.id)),
+          ]),
+        ),
+      )
     }
     if (results.tracks.length) {
-      console.log("\nTracks")
-      for (const track of results.tracks) {
-        console.log(
-          `  ${track.id}  ${track.artist?.name ?? "?"} — ${track.title}  ${formatDuration(track.duration)}`,
-        )
-      }
+      heading("🎵  Tracks")
+      console.log(
+        columns(
+          results.tracks.map((track) => [
+            accent(track.title),
+            dim(track.artist?.name ?? "?"),
+            dim(formatDuration(track.duration)),
+            muted(String(track.id)),
+          ]),
+          ["left", "left", "right", "left"],
+        ),
+      )
     }
   },
 })

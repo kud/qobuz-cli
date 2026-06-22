@@ -1,5 +1,6 @@
 import { defineCommand } from "citty"
 import { connect } from "../lib.js"
+import { accent, columns, heading, muted } from "../ui.js"
 
 export const similar = defineCommand({
   meta: {
@@ -12,6 +13,15 @@ export const similar = defineCommand({
   run: async ({ args }) => {
     const client = await connect()
     const artists = await client.artists.getSimilar(Number(args.id))
-    for (const artist of artists) console.log(`  ${artist.id}  ${artist.name}`)
+    if (!artists.length) return
+    heading("🎤  Similar artists")
+    console.log(
+      columns(
+        artists.map((artist) => [
+          accent(artist.name),
+          muted(String(artist.id)),
+        ]),
+      ),
+    )
   },
 })
