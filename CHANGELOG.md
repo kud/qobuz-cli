@@ -8,6 +8,18 @@ All notable changes to this project are documented here.
 
 ### Highlights
 
+- **`qobuz open` now launches items directly in the Qobuz desktop app.** Running `qobuz open <type> <id>` sends a `qobuzapp://` deep link to the native app rather than opening a browser tab, giving you a seamless in-app experience for albums, artists, tracks, and playlists. ([abc1c69](https://github.com/kud/qobuz-cli/commit/abc1c690b48fc5bae1b302854268ff7a9ecb8b7b))
+
+### Internal
+
+- Bumped `@kud/qobuz` core dependency to 0.5.0, which introduces the `client.appLink` method used by the new `appLinkFor` helper. ([abc1c69](https://github.com/kud/qobuz-cli/commit/abc1c690b48fc5bae1b302854268ff7a9ecb8b7b))
+
+---
+
+## Unreleased — 2026-06-22
+
+### Highlights
+
 - **All CLI commands now render rich, readable terminal output.** A new shared `src/ui.ts` module brings consistent ANSI styling across every command — bold titles, dim metadata, accent-coloured names, muted IDs, and aligned column tables. The `search`, `album`, `artist`, `track`, `similar`, `fav`, and `playlist` commands all produce polished output without any extra flags. ([c26d6ac](https://github.com/kud/qobuz-cli/commit/c26d6ace6aa8a5a1bcee5882060808e0054df18f))
 
 - **`qobuz stats` gains bar charts with localised number formatting.** The stats command now renders horizontal bar graphs for genre and bit-depth breakdowns, making the distribution data immediately scannable at a glance. ([c26d6ac](https://github.com/kud/qobuz-cli/commit/c26d6ace6aa8a5a1bcee5882060808e0054df18f))
