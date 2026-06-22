@@ -6,6 +6,14 @@ All notable changes to this project are documented here.
 
 ## Unreleased — 2026-06-22
 
+### Internal
+
+- Playback commands (`play`, `next`, `previous`, `forward`, `rewind`) now delegate media key dispatch to the published `@kud/macos-media-keys` package instead of a Swift file compiled and bundled inside the CLI itself. The bundled `native/media-key.swift` source and the `build:native` step have been removed. No change in behaviour — this reduces the build surface and makes the media-key logic reusable independently of the CLI. ([44dc0c3](https://github.com/kud/qobuz-cli/commit/44dc0c39e639d6c4e927fa1ecd4169e08de6898c))
+
+---
+
+## Unreleased — 2026-06-22
+
 ### Highlights
 
 - **`qobuz open` now launches items directly in the Qobuz desktop app.** Running `qobuz open <type> <id>` sends a `qobuzapp://` deep link to the native app rather than opening a browser tab, giving you a seamless in-app experience for albums, artists, tracks, and playlists. ([abc1c69](https://github.com/kud/qobuz-cli/commit/abc1c690b48fc5bae1b302854268ff7a9ecb8b7b))
