@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     permissions:
       contents: read
       id-token: write
@@ -19,7 +19,5 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - run: npm install -g npm@latest
       - run: npm ci
-      # The published package ships native/media-key.swift (compiled at runtime
-      # on macOS); CI only needs the JS bundle, so skip the swiftc build step.
-      - run: npx tsup
+      - run: npm run build
       - run: npm publish --access public
