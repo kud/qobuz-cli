@@ -12,11 +12,13 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: "24"
-      - run: npm install
+          registry-url: "https://registry.npmjs.org"
+      - run: npm install -g npm@latest
+      - run: npm ci
       # The published package ships native/media-key.swift (compiled at runtime
       # on macOS); CI only needs the JS bundle, so skip the swiftc build step.
       - run: npx tsup
