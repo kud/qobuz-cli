@@ -1,5 +1,5 @@
 import { defineCommand } from "citty"
-import { type MediaKey, sendMediaKey } from "../media-key.js"
+import { type MediaKey, sendMediaKey } from "@kud/macos-media-keys"
 
 const playbackCommand = (name: string, description: string, key: MediaKey) =>
   defineCommand({
