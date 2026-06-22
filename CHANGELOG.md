@@ -6,6 +6,14 @@ All notable changes to this project are documented here.
 
 ## Unreleased — 2026-06-22
 
+### Fixes
+
+- `qobuz-cli` can now be installed on Linux and other non-macOS platforms without errors. The `@kud/macos-media-keys` dependency is now declared as optional, so npm skips it on non-macOS systems instead of failing with `EBADPLATFORM`. Playback commands load the library dynamically at runtime, meaning non-macOS installs work for everything except media-key playback control. macOS users are unaffected. ([548bc25](https://github.com/kud/qobuz-cli/commit/548bc2568b190f1c7ca1fe94df427e160d05950c))
+
+---
+
+## Unreleased — 2026-06-22
+
 ### Internal
 
 - Playback commands (`play`, `next`, `previous`, `forward`, `rewind`) now delegate media key dispatch to the published `@kud/macos-media-keys` package instead of a Swift file compiled and bundled inside the CLI itself. The bundled `native/media-key.swift` source and the `build:native` step have been removed. No change in behaviour — this reduces the build surface and makes the media-key logic reusable independently of the CLI. ([44dc0c3](https://github.com/kud/qobuz-cli/commit/44dc0c39e639d6c4e927fa1ecd4169e08de6898c))
