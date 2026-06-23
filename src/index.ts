@@ -16,6 +16,17 @@ import { stats } from "./commands/stats.js"
 import { track } from "./commands/track.js"
 import { url } from "./commands/url.js"
 
+const tui = defineCommand({
+  meta: {
+    name: "tui",
+    description: "Browse Qobuz in an interactive terminal UI",
+  },
+  run: async () => {
+    const { runTui } = await import("./tui/index.js")
+    await runTui()
+  },
+})
+
 const main = defineCommand({
   meta: {
     name: "qobuz",
@@ -23,6 +34,7 @@ const main = defineCommand({
       "Qobuz from the command line — search, library, and quick-open in the app",
   },
   subCommands: {
+    tui,
     login,
     logout,
     search,
@@ -57,11 +69,14 @@ const args = process.argv.slice(2)
 const [command, ...rest] = args
 const rawArgs = command && aliases[command] ? [aliases[command], ...rest] : args
 
-const isTopLevelHelp =
-  rawArgs.length === 0 || rawArgs[0] === "--help" || rawArgs[0] === "-h"
+const isHelp = rawArgs[0] === "--help" || rawArgs[0] === "-h"
+const isTui = rawArgs.length === 0 || rawArgs[0] === "tui"
 
-if (isTopLevelHelp) {
+if (isHelp) {
   console.log(await renderGenericUsage(main))
+} else if (isTui) {
+  const { runTui } = await import("./tui/index.js")
+  await runTui()
 } else {
   runMain(main, { rawArgs })
 }

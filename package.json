@@ -24,13 +24,17 @@
   },
   "dependencies": {
     "@kud/qobuz": "0.5.5",
-    "citty": "0.2.2"
+    "citty": "0.2.2",
+    "ink": "7.1.0",
+    "ink-text-input": "6.0.0",
+    "react": "19.2.7"
   },
   "optionalDependencies": {
     "@kud/macos-media-keys": "0.1.0"
   },
   "devDependencies": {
     "@types/node": "26.0.0",
+    "@types/react": "19.2.17",
     "tsup": "8.5.1",
     "tsx": "4.22.4",
     "typescript": "6.0.3"
