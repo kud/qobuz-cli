@@ -4,6 +4,24 @@ All notable changes to this project are documented here.
 
 ---
 
+## Unreleased — 2026-06-23
+
+### Highlights
+
+- **A full-screen interactive TUI is now available.** Running `qobuz` with no arguments (or `qobuz tui`) opens an Ink/React terminal UI with type-to-search, arrow-key navigation, detail views for tracks, albums, artists and playlists, now-playing display, and playback control — the "Raycast in the terminal" experience that was previously macOS-only via the Raycast extension. Linux and any terminal user can now access the same interactive flow. All existing one-shot commands (`qobuz search`, `qobuz album`, etc.) are unaffected. ([e8b9dc8](https://github.com/kud/qobuz-cli/commit/e8b9dc8))
+
+- **Convert and open directly from the TUI.** The interactive mode surfaces the `convert` command inline — search for a track or album, then jump straight to Deezer, Spotify, or YouTube without leaving the terminal. Opening in the Qobuz desktop app via deep link is also available from the detail view.
+
+### Documentation
+
+- README updated with a dedicated TUI section covering launch options, key bindings, and the interactive feature surface. ([cca99e6](https://github.com/kud/qobuz-cli/commit/cca99e6))
+
+### Internal
+
+- Vitest test suite added with unit test coverage for core logic. ([cca99e6](https://github.com/kud/qobuz-cli/commit/cca99e6))
+
+---
+
 ## Unreleased — 2026-06-22
 
 ### Fixes
