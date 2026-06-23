@@ -84,6 +84,25 @@ const add = defineCommand({
   },
 })
 
+const edit = defineCommand({
+  meta: { name: "edit", description: "Edit a playlist's description" },
+  args: {
+    id: { type: "positional", description: "Playlist ID", required: true },
+    description: {
+      type: "positional",
+      description: "New description",
+      required: true,
+    },
+  },
+  run: async ({ args }) => {
+    const client = await connect()
+    await client.playlists.update(Number(args.id), {
+      description: args.description,
+    })
+    success(`updated description for playlist ${args.id}`)
+  },
+})
+
 const remove = defineCommand({
   meta: { name: "remove", description: "Delete a playlist" },
   args: {
@@ -98,5 +117,5 @@ const remove = defineCommand({
 
 export const playlist = defineCommand({
   meta: { name: "playlist", description: "Manage playlists" },
-  subCommands: { list, show, create, add, remove },
+  subCommands: { list, show, create, add, edit, remove },
 })

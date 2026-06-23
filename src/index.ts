@@ -2,9 +2,11 @@ import { defineCommand, runMain } from "citty"
 import { renderGenericUsage } from "./help.js"
 import { album } from "./commands/album.js"
 import { artist } from "./commands/artist.js"
+import { convert } from "./commands/convert.js"
 import { fav } from "./commands/fav.js"
 import { login } from "./commands/login.js"
 import { logout } from "./commands/logout.js"
+import { nowPlaying } from "./commands/now-playing.js"
 import { open } from "./commands/open.js"
 import { forward, next, play, previous, rewind } from "./commands/playback.js"
 import { playlist } from "./commands/playlist.js"
@@ -30,6 +32,8 @@ const main = defineCommand({
     similar,
     fav,
     playlist,
+    convert,
+    "now-playing": nowPlaying,
     stats,
     url,
     open,
@@ -43,6 +47,7 @@ const main = defineCommand({
 
 const aliases: Record<string, string> = {
   "copy-url": "url",
+  np: "now-playing",
   prev: "previous",
   ff: "forward",
   rew: "rewind",
