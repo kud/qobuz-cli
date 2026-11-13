@@ -8,6 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/kud/qobuz-cli.git"
   },
+  "homepage": "https://kud.io/projects/qobuz-cli",
   "bin": {
     "qobuz": "./dist/index.js"
   },
