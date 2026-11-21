@@ -6,6 +6,6 @@ export default defineConfig({
   target: "node20",
   clean: true,
   splitting: false,
-  external: ["@kud/macos-media-keys"],
+  external: ["@kud/macos-media-keys", "playwright"],
   banner: { js: "#!/usr/bin/env node" },
 })
