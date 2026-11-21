@@ -35,6 +35,14 @@
   "optionalDependencies": {
     "@kud/macos-media-keys": "0.1.0"
   },
+  "peerDependencies": {
+    "playwright": ">=1.40.0"
+  },
+  "peerDependenciesMeta": {
+    "playwright": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@types/node": "26.0.0",
     "@types/react": "19.2.17",
