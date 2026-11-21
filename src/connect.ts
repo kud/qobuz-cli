@@ -1,4 +1,4 @@
-import { fetchAppId, validateCredentials } from "@kud/qobuz"
+import { connect, fetchAppId } from "@kud/qobuz"
 import { store } from "./lib.js"
 import { countdownAndOpen, createPrompts } from "./prompts.js"
 
@@ -7,8 +7,9 @@ const scrapeAppId = () =>
     .then((result) => result.appId)
     .catch(() => "")
 
-// Shared by the paste flow and `--browser`: validate the pair against the live
-// API, then persist it to the Keychain. Nothing is saved unless it validates.
+// Shared by the paste flow and `--browser`. The core's connect() validates the
+// pair against the live API, then persists it to the Keychain; nothing is
+// saved unless it validates.
 export const validateAndSave = async ({
   appId,
   token,
@@ -18,13 +19,12 @@ export const validateAndSave = async ({
 }) => {
   process.stdout.write("\n  Validating… ")
   try {
-    await validateCredentials({ appId, token })
+    await connect({ token, appId, store })
   } catch (error) {
     console.error(`\n✗ ${(error as Error).message}`)
     process.exit(1)
   }
 
-  await store.save({ appId, token })
   console.log('✓ connected. Session saved to the Keychain (service "qobuz").')
 }
 
