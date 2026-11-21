@@ -65,6 +65,7 @@ Run `qobuz` (no arguments) or `qobuz tui` to open the interactive full-screen in
 $ qobuz                            # open interactive TUI
 $ qobuz tui                        # same — explicit subcommand
 $ qobuz login                      # connect (opens browser, paste app_id + token)
+$ qobuz login --browser            # connect by signing in; token captured automatically
 $ qobuz search "radiohead"
 $ qobuz album 0634904032432
 $ qobuz fav list
@@ -83,6 +84,10 @@ $ qobuz now-playing                # show the currently-playing track (alias: np
 Full command set: `tui`, `login`, `logout`, `search`, `album`, `artist`, `track`, `similar`, `fav` (list/add/remove), `playlist` (list/show/create/add/remove), `convert`, `now-playing` / `np`, `stats`, `url` / `copy-url`, `open`, `play`, `next`, `previous` / `prev`, `forward` / `ff`, `rewind` / `rew`.
 
 > **macOS note** — playback commands (`play`, `next`, `previous`, `forward`, `rewind`) and TUI playback keys (`space`, `n`, `p`) use real media keys and require Accessibility permission granted to your terminal. The first playback command compiles a small Swift helper via `swiftc`.
+
+### Assisted login (`--browser`)
+
+`qobuz login --browser` opens a real, visible Chromium window on play.qobuz.com/login and lets you sign in there exactly as you would normally. Once you are in, the CLI captures the session token the web player sends (the `X-User-Auth-Token` request header, with the player's localStorage as a fallback), validates it and saves it to the Keychain just like the paste flow, then closes the window. Your password is typed into Qobuz's own page and never passes through, or is stored by, the CLI. Playwright is an optional peer dependency and is not installed by default; `--browser` prints the install command (`npm install -g playwright && npx playwright install chromium`) if it is missing. If no token appears within five minutes, plain `qobuz login` remains available.
 
 ## Development
 

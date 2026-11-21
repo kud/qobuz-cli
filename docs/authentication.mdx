@@ -34,6 +34,18 @@ request to www.qobuz.com/api.json and copy these from its headers:
 
 If validation fails (`✗ …`), the token was rejected — grab a fresh one from a currently logged-in session and retry. Nothing is saved unless validation passes.
 
+## 🌐 `qobuz login --browser`
+
+An opt-in, assisted variant of the same flow. It opens a real, headed Chromium window on [play.qobuz.com/login](https://play.qobuz.com/login); you sign in there as usual, captcha included. The CLI watches the requests the web player makes and takes the first `X-User-Auth-Token` header it sees (and `X-App-Id` alongside it, otherwise the scraped default), falling back to a `user_auth_token` held in the page's localStorage. The token then goes through the same validation and Keychain save as the paste flow, and the window is closed. The password is entered only into Qobuz's page and never passes through the CLI.
+
+Playwright is an optional peer dependency, so a plain install does not pull it in. Install it once to use this flag:
+
+```console
+$ npm install -g playwright && npx playwright install chromium
+```
+
+If Playwright is missing, `--browser` prints that command and exits non-zero. If no token is seen within five minutes, or the window is closed first, it stops and points back to plain `qobuz login`.
+
 ## 🚪 `qobuz logout`
 
 Clears the stored session from the Keychain. The next command will require `qobuz login` again.
