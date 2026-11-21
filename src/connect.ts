@@ -1,4 +1,4 @@
-import { connect, fetchAppId } from "@kud/qobuz"
+import { connect, fetchAppId, type CredentialStore } from "@kud/qobuz"
 import { store } from "./lib.js"
 import { countdownAndOpen, createPrompts } from "./prompts.js"
 
@@ -8,8 +8,10 @@ const scrapeAppId = () =>
     .catch(() => "")
 
 // Shared by the paste flow and `--browser`. The core's connect() validates the
-// pair against the live API, then persists it to the Keychain; nothing is
-// saved unless it validates.
+// pair against the live API, persists it to the Keychain, then opens a client
+// from what it stored. The last step can still fail after the save (the
+// Keychain read back, for instance), so record whether the save happened:
+// credentials on disk are a successful login, with a warning, not a failure.
 export const validateAndSave = async ({
   appId,
   token,
@@ -17,12 +19,31 @@ export const validateAndSave = async ({
   appId: string
   token: string
 }) => {
+  let saved = false
+  const recordingStore: CredentialStore = {
+    load: () => store.load(),
+    clear: () => store.clear(),
+    save: async (credentials) => {
+      await store.save(credentials)
+      saved = true
+    },
+  }
+
   process.stdout.write("\n  Validating… ")
   try {
-    await connect({ token, appId, store })
+    await connect({ token, appId, store: recordingStore })
   } catch (error) {
-    console.error(`\n✗ ${(error as Error).message}`)
-    process.exit(1)
+    const reason = (error as Error).message
+    if (!saved) {
+      console.error(`\n✗ ${reason}`)
+      process.exit(1)
+    }
+    console.log('✓ saved to the Keychain (service "qobuz").')
+    console.warn(
+      `⚠ Connecting with the saved session failed: ${reason}\n` +
+        "  Try a command such as `qobuz search <query>`; if it fails the same way, run `qobuz login` again.",
+    )
+    return
   }
 
   console.log('✓ connected. Session saved to the Keychain (service "qobuz").')

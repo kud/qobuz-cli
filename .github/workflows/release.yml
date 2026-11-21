@@ -1,23 +1,58 @@
 name: Release
 
+# Publishes the version in package.json to npm and tags it.
+# - Push a v* tag yourself, or
+# - run it by hand (workflow_dispatch) on main: it tags the current
+#   package.json version, then publishes. A tag pushed with the workflow's own
+#   token does not start this workflow again, so nothing publishes twice.
+
 on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       id-token: write
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v5
         with:
           node-version: "24"
           registry-url: "https://registry.npmjs.org"
+
+      - name: Tag the package.json version
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_REF" == "refs/heads/main" ]] || { echo "::error::Run the release from main."; exit 1; }
+          version=$(node -p "require('./package.json').version")
+          tag="v$version"
+          if npm view "$(node -p "require('./package.json').name")@$version" version >/dev/null 2>&1; then
+            echo "::error::$version is already on npm. Bump the version first."
+            exit 1
+          fi
+          # A tag left by an earlier run whose publish failed is reused, but
+          # only when it points at a commit that carries this same version.
+          existing=$(git rev-list -n 1 "$tag" 2>/dev/null || true)
+          if [[ -n "$existing" ]]; then
+            tagged_version=$(git show "$existing:package.json" | node -p "JSON.parse(require('fs').readFileSync(0)).version")
+            [[ "$tagged_version" == "$version" ]] || { echo "::error::$tag points at $existing, which is not version $version."; exit 1; }
+            echo "Reusing $tag at $existing"
+          else
+            git tag "$tag" "$GITHUB_SHA"
+            git push origin "refs/tags/$tag"
+            echo "Tagged $tag at $GITHUB_SHA"
+          fi
+
       - run: npm install -g npm@latest
       - run: npm ci
+      - run: npm test
       - run: npm run build
-      - run: npm publish --access public
+      - run: npm publish --provenance --access public

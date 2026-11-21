@@ -4,6 +4,28 @@ All notable changes to this project are documented here.
 
 ---
 
+## 1.1.0 — 2026-11-21
+
+### Highlights
+
+- **`qobuz login --browser` signs you in through a real browser window.** The CLI opens Qobuz's own login page in a headed, Playwright-driven browser, lets you sign in there, then captures the session token the web player sends (and its app id when present), so there is nothing to copy out of DevTools and the password never passes through the CLI. Playwright is an optional peer dependency; the paste flow of `qobuz login` is unchanged. ([415a53e](https://github.com/kud/qobuz-cli/commit/415a53e))
+
+### Fixes
+
+- `qobuz login` no longer reports a failure when the credentials were saved but opening a session with them failed afterwards. It now prints `✓ saved` with a warning naming the cause and what to try, and exits 0; it still exits 1 when nothing was saved. ([f454829](https://github.com/kud/qobuz-cli/commit/f454829))
+
+### Dependencies
+
+- `@kud/qobuz` is now `^0.6.0`, which refreshes the app id once when Qobuz rotates it instead of failing until you log in again. ([998d2ad](https://github.com/kud/qobuz-cli/commit/998d2ad))
+
+### Internal
+
+- A CI workflow typechecks, builds and tests every push to `main` and every pull request, on a macOS runner so the optional macOS-only types install. ([d2724ff](https://github.com/kud/qobuz-cli/commit/d2724ff), [e540f26](https://github.com/kud/qobuz-cli/commit/e540f26))
+- The release workflow can be run by hand on `main`: it tags the `package.json` version, runs the tests, then publishes with trusted publishing and provenance. Pushing a `v*` tag still works. ([92aabd1](https://github.com/kud/qobuz-cli/commit/92aabd1))
+- MIT licence, homepage and a project icon added. ([6af84a2](https://github.com/kud/qobuz-cli/commit/6af84a2), [d253b51](https://github.com/kud/qobuz-cli/commit/d253b51))
+
+---
+
 ## Unreleased — 2026-06-23
 
 ### Highlights
