@@ -26,7 +26,7 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@kud/qobuz": "0.5.5",
+    "@kud/qobuz": "^0.6.0",
     "citty": "0.2.2",
     "ink": "7.1.0",
     "ink-text-input": "6.0.0",
