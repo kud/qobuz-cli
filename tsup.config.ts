@@ -1,11 +1,11 @@
 import { defineConfig } from "tsup"
 
 export default defineConfig({
-  entry: ["src/index.ts"],
+  entry: { index: "src/bin.ts", cli: "src/cli.ts" },
   format: ["esm"],
-  target: "node20",
+  target: "node22",
   clean: true,
   splitting: false,
-  external: ["@kud/macos-media-keys", "playwright"],
+  external: ["./cli.js", "@kud/macos-media-keys", "playwright"],
   banner: { js: "#!/usr/bin/env node" },
 })
