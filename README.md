@@ -1,7 +1,7 @@
 <div align="center">
 
 ![npm](https://img.shields.io/npm/v/%40kud%2Fqobuz-cli?style=flat-square&color=CB3837)
-![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20-339933?style=flat-square&logo=node.js&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-%3E%3D22-339933?style=flat-square&logo=node.js&logoColor=white)
 ![MIT](https://img.shields.io/badge/licence-MIT-22C55E?style=flat-square)
 
 **Command-line interface for Qobuz — search, library, and quick-open in the app**
