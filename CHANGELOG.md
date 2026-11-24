@@ -4,6 +4,18 @@ All notable changes to this project are documented here.
 
 ---
 
+## 1.1.1 — 2026-11-24
+
+### Fixes
+
+- The `qobuz` binary now runs React in production mode (unless `NODE_ENV` is set explicitly), which is lighter and faster for the interactive UI.
+
+### Dependencies
+
+- Ink is now 8, which requires Node 22; the supported Node range is `>=22`.
+
+---
+
 ## 1.1.0 — 2026-11-21
 
 ### Highlights
